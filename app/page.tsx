@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Sidebar from "@/components/Sidebar";
 import ChatArea from "@/components/ChatArea";
 
 export interface Message {
@@ -9,75 +8,44 @@ export interface Message {
   text: string;
 }
 
-export interface Chat {
-  id: number;
-  title: string;
-  messages: Message[];
-}
-
 export default function Home() {
-  const [chats, setChats] = useState<Chat[]>([
+  const [messages, setMessages] = useState<Message[]>([
     {
-      id: 1,
-      title: "Chat 1",
-      messages: [],
+      sender: "user",
+      text: "Aku tadi makan nasi goreng dan es teh manis, kalorinya berapa ya?",
+    },
+    {
+      sender: "bot",
+      text: `Perkiraan total kalori:
+
+• Nasi goreng: ± 630 kkal
+• Es teh manis: ± 120 kkal
+
+Total konsumsi sekitar 750 kkal`,
     },
   ]);
 
-  const [activeChatId, setActiveChatId] = useState(1);
-
-  const activeChat = chats.find(
-    (chat) => chat.id === activeChatId
-  );
-
-  const handleNewChat = () => {
-    const newChat = {
-      id: Date.now(),
-      title: `Chat ${chats.length + 1}`,
-      messages: [],
-    };
-
-    setChats([...chats, newChat]);
-    setActiveChatId(newChat.id);
-  };
-
-  const handleSendMessage = (message: string) => {
+  const sendMessage = (message: string) => {
     if (!message.trim()) return;
 
-    const updatedChats = chats.map((chat) => {
-      if (chat.id !== activeChatId) return chat;
-
-      return {
-        ...chat,
-        messages: [
-          ...chat.messages,
-          {
-            sender: "user",
-            text: message,
-          },
-          {
-            sender: "bot",
-            text: `${message}`,
-          },
-        ],
-      };
-    });
-
-    setChats(updatedChats);
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "user",
+        text: message,
+      },
+      {
+        sender: "bot",
+        text: `${message}`,
+      },
+    ]);
   };
 
   return (
-    <main className="flex h-screen bg-gray-100">
-      <Sidebar
-        chats={chats}
-        activeChatId={activeChatId}
-        onSelectChat={setActiveChatId}
-        onNewChat={handleNewChat}
-      />
-
+    <main className="h-screen bg-[#F7F8FC]">
       <ChatArea
-        messages={activeChat?.messages || []}
-        onSend={handleSendMessage}
+        messages={messages}
+        onSend={sendMessage}
       />
     </main>
   );

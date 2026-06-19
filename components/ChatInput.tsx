@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Plus, Send } from "lucide-react";
 
 interface Props {
   onSend: (message: string) => void;
@@ -19,29 +20,31 @@ export default function ChatInput({
   };
 
   return (
-    <div className="border-t bg-white p-4">
-      <div className="flex gap-2">
-        <input
-          value={message}
-          onChange={(e) =>
-            setMessage(e.target.value)
-          }
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSend();
-            }
-          }}
-          placeholder="Tulis pesan..."
-          className="flex-1 border rounded-lg px-4 py-3"
-        />
+    <div className="bg-white border rounded-full flex items-center px-4 py-3 shadow-sm">
+      <button>
+        <Plus size={24} />
+      </button>
 
-        <button
-          onClick={handleSend}
-          className="bg-blue-600 text-white px-6 rounded-lg"
-        >
-          Kirim
-        </button>
-      </div>
+      <input
+        value={message}
+        onChange={(e) =>
+          setMessage(e.target.value)
+        }
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSend();
+          }
+        }}
+        placeholder="Apa yang ingin kamu tanyakan?"
+        className="flex-1 px-3 outline-none"
+      />
+
+      <button
+        onClick={handleSend}
+        className="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center"
+      >
+        <Send size={18} />
+      </button>
     </div>
   );
 }
