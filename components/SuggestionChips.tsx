@@ -1,7 +1,15 @@
-export default function SuggestionChips() {
+interface Props {
+  onSend: (message: string) => void;
+}
+
+export default function SuggestionChips({
+  onSend,
+}: Props) {
   const chips = [
-    "Berapa banyak protein?",
+    "Berapa banyak protein yang dibutuhkan tubuh setiap hari?",
     "Apa itu gizi seimbang?",
+    "Bagaimana cara menghitung BMI?",
+    "Makanan apa yang tinggi protein?",
   ];
 
   return (
@@ -9,7 +17,8 @@ export default function SuggestionChips() {
       {chips.map((chip) => (
         <button
           key={chip}
-          className="whitespace-nowrap border rounded-full px-4 py-2 text-sm bg-white"
+          onClick={() => onSend(chip)}
+          className="whitespace-nowrap border rounded-full px-4 py-2 text-sm bg-white hover:bg-gray-100 transition"
         >
           {chip}
         </button>
