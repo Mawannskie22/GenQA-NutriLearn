@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Search, Plus, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Chat } from "@/app/page";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface Props {
   open: boolean;
@@ -29,6 +30,7 @@ export default function ChatDrawer({
   const [renamingId, setRenamingId] = useState<number | null>(null);
   const [renameValue, setRenameValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const renameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -72,15 +74,15 @@ export default function ChatDrawer({
       )}
 
       <div
-        className={`fixed top-0 left-0 z-50 h-dvh w-72 bg-white shadow-xl transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 left-0 z-50 h-dvh w-72 bg-white shadow-xl transition-transform duration-200 ease-out md:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* HEADER */}
           <div className="flex items-center justify-between p-4 border-b">
-            <h1 className="text-2xl font-bold text-blue-600">NutriAI</h1>
-            <button onClick={onClose}>
+            <h1 className="text-2xl font-bold text-blue-600 text-balance">NutriAI</h1>
+            <button onClick={onClose} aria-label="Close drawer">
               <X size={22} />
             </button>
           </div>
@@ -156,6 +158,7 @@ export default function ChatDrawer({
                           menuOpenId === chat.id ? null : chat.id
                         );
                       }}
+                      aria-label="Chat options"
                       className="absolute right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-gray-200 transition-opacity"
                     >
                       <MoreHorizontal size={15} />
@@ -180,7 +183,7 @@ export default function ChatDrawer({
                       </button>
                       <button
                         onClick={() => {
-                          onDeleteChat(chat.id);
+                          setConfirmDeleteId(chat.id);
                           setMenuOpenId(null);
                         }}
                         className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 text-left text-red-600"
@@ -196,6 +199,17 @@ export default function ChatDrawer({
           </div>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmDeleteId !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDeleteId(null); }}
+        onConfirm={() => {
+          if (confirmDeleteId !== null) onDeleteChat(confirmDeleteId);
+          setConfirmDeleteId(null);
+        }}
+        title="Delete chat?"
+        description="This action cannot be undone. The chat and all its messages will be permanently deleted."
+      />
     </>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Chat } from "@/app/page";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface Props {
   chats: Chat[];
@@ -24,6 +25,7 @@ export default function Sidebar({
   const [menuOpenId, setMenuOpenId] = useState<number | null>(null);
   const [renamingId, setRenamingId] = useState<number | null>(null);
   const [renameValue, setRenameValue] = useState("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const renameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function Sidebar({
   return (
     <aside className="w-72 bg-white border-r flex flex-col">
       <div className="p-4">
-        <h1 className="text-2xl font-bold text-blue-600">
+        <h1 className="text-2xl font-bold text-blue-600 text-balance">
           NutriAI
         </h1>
 
@@ -97,6 +99,7 @@ export default function Sidebar({
                   e.stopPropagation();
                   setMenuOpenId(menuOpenId === chat.id ? null : chat.id);
                 }}
+                aria-label="Chat options"
                 className="absolute right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-gray-200 transition-opacity"
               >
                 <MoreHorizontal size={16} />
@@ -120,7 +123,7 @@ export default function Sidebar({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDeleteChat(chat.id);
+                    setConfirmDeleteId(chat.id);
                     setMenuOpenId(null);
                   }}
                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 text-left text-red-600"
@@ -133,6 +136,17 @@ export default function Sidebar({
           </div>
         ))}
       </div>
+
+      <ConfirmDialog
+        open={confirmDeleteId !== null}
+        onOpenChange={(open) => { if (!open) setConfirmDeleteId(null); }}
+        onConfirm={() => {
+          if (confirmDeleteId !== null) onDeleteChat(confirmDeleteId);
+          setConfirmDeleteId(null);
+        }}
+        title="Delete chat?"
+        description="This action cannot be undone. The chat and all its messages will be permanently deleted."
+      />
     </aside>
   );
 }

@@ -45,7 +45,7 @@ export default function ChatArea({
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="flex flex-col h-dvh flex-1 bg-[#F7F8FC]">
+    <div className="flex flex-col h-dvh flex-1 bg-chat-bg">
       <MobileHeader onToggleDrawer={() => setDrawerOpen(true)} />
 
       <ChatDrawer
@@ -82,15 +82,15 @@ function CenteredLayout({
 }) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 pb-4 md:pb-12 overflow-y-auto">
-      <div className="hidden md:flex w-16 h-16 rounded-xl bg-blue-600 text-white items-center justify-center font-bold text-4xl">
+      <div className="hidden md:flex size-16 rounded-xl bg-blue-600 text-white items-center justify-center font-bold text-4xl">
         N
       </div>
 
-      <h1 className="text-xl md:text-4xl font-bold text-blue-700 mt-0 md:mt-6">
+      <h1 className="text-xl md:text-4xl font-bold text-blue-700 mt-0 md:mt-6 text-balance">
         NutriAI
       </h1>
 
-      <p className="text-gray-500 mt-0.5 md:mt-2 text-xs md:text-lg">
+      <p className="text-gray-500 mt-0.5 md:mt-2 text-xs md:text-lg text-pretty">
         Your AI Nutrition Assistant
       </p>
 
@@ -120,7 +120,7 @@ function ChatLayout({
     <>
       {/* HEADER DESKTOP */}
       <div className="hidden md:flex h-20 bg-white border-b items-center justify-between px-12 shrink-0">
-        <h1 className="text-4xl font-bold text-blue-700">NutriAI</h1>
+        <h1 className="text-4xl font-bold text-blue-700 text-balance">NutriAI</h1>
 
         <div className="flex items-center gap-8">
           <Search size={20} className="text-gray-500" />

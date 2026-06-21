@@ -9,7 +9,7 @@ interface Props {
 export default function MobileHeader({ onToggleDrawer }: Props) {
   return (
     <div className="md:hidden h-12 bg-white border-b flex items-center justify-between px-4 shrink-0">
-      <button onClick={onToggleDrawer}>
+      <button onClick={onToggleDrawer} aria-label="Open menu">
         <Menu size={22} />
       </button>
 

@@ -8,12 +8,12 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FC] px-4">
+    <div className="flex flex-col items-center justify-center min-h-dvh bg-chat-bg px-4">
       <div className="bg-white rounded-2xl shadow-sm p-8 max-w-md text-center">
-        <h2 className="text-2xl font-bold text-blue-700 mb-2">
+        <h2 className="text-2xl font-bold text-blue-700 mb-2 text-balance">
           Something went wrong
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-6 text-pretty">
           An unexpected error occurred. Please try again.
         </p>
         <button

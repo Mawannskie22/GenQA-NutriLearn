@@ -108,7 +108,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex h-screen overflow-hidden bg-[#F7F8FC]">
+    <main className="flex h-dvh overflow-hidden bg-chat-bg">
       <div className="hidden md:flex">
         <Sidebar
           chats={chats}

@@ -23,7 +23,7 @@ export default function ChatInput({
 
   return (
     <div className="bg-white border rounded-full flex items-center px-2 md:px-4 py-1.5 md:py-3 shadow-sm">
-      <button>
+      <button aria-label="Add file">
         <Plus size={18} className="md:size-[24px]" />
       </button>
 
@@ -45,7 +45,8 @@ export default function ChatInput({
       <button
         disabled={disabled}
         onClick={handleSend}
-        className="w-8 h-8 md:w-11 md:h-11 rounded-full bg-blue-600 text-white flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Send message"
+        className="size-8 md:size-11 rounded-full bg-blue-600 text-white flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Send size={14} className="md:size-[18px]" />
       </button>
