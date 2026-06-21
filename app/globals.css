@@ -128,3 +128,58 @@
     @apply font-sans;
   }
 }
+
+.markdown-body strong {
+  @apply font-semibold;
+}
+
+.markdown-body ol {
+  @apply list-decimal pl-5 space-y-2;
+}
+
+.markdown-body ul {
+  @apply list-disc pl-5 space-y-1;
+}
+
+.markdown-body li::marker {
+  @apply text-gray-500;
+}
+
+.markdown-body p:not(:last-child) {
+  @apply mb-2;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  @apply font-semibold mt-4 mb-2;
+}
+
+.markdown-body h1 { @apply text-lg; }
+.markdown-body h2 { @apply text-base; }
+.markdown-body h3 { @apply text-sm; }
+
+.markdown-body code {
+  @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm;
+}
+
+.markdown-body pre {
+  @apply bg-gray-100 p-3 rounded-lg overflow-x-auto my-2 text-sm;
+}
+
+.markdown-body a {
+  @apply text-blue-600 underline;
+}
+
+.markdown-body table {
+  @apply w-full border-collapse my-2 text-sm;
+}
+
+.markdown-body th,
+.markdown-body td {
+  @apply border border-gray-300 px-3 py-1.5 text-left;
+}
+
+.markdown-body th {
+  @apply bg-gray-100 font-semibold;
+}

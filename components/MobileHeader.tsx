@@ -1,23 +1,21 @@
+"use client";
+
 import { Menu } from "lucide-react";
 
-export default function MobileHeader() {
+interface Props {
+  onToggleDrawer: () => void;
+}
+
+export default function MobileHeader({ onToggleDrawer }: Props) {
   return (
-    <header className="h-16 bg-white border-b flex items-center justify-between px-4">
-      <button>
-        <Menu size={24} />
+    <div className="md:hidden h-12 bg-white border-b flex items-center justify-between px-4 shrink-0">
+      <button onClick={onToggleDrawer}>
+        <Menu size={22} />
       </button>
 
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
-          N
-        </div>
-
-        <span className="font-bold text-blue-600 text-xl">
-          NutriAI
-        </span>
-      </div>
-
-      <div className="w-6" />
-    </header>
+      <span className="font-bold text-blue-700 text-lg">
+        NutriAI
+      </span>
+    </div>
   );
 }

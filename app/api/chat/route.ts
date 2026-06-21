@@ -1,8 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+const apiKey = process.env.GEMINI_API_KEY;
+
+if (!apiKey) {
+  throw new Error("GEMINI_API_KEY environment variable is not set");
+}
+
+const ai = new GoogleGenAI({ apiKey });
 
 export async function POST(req: Request) {
   try {

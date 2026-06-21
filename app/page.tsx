@@ -16,97 +16,51 @@ export interface Chat {
 }
 
 export default function Home() {
-  const [chats, setChats] = useState<Chat[]>([
-    {
-      id: 1,
-      title: "Chat 1",
-      messages: [],
-    },
-    {
-      id: 2,
-      title: "Chat 2",
-      messages: [],
-    },
-    {
-      id: 3,
-      title: "Chat 3",
-      messages: [],
-    },
-    {
-      id: 4,
-      title: "Chat 4",
-      messages: [],
-    },
-  ]);
+  const [chats, setChats] = useState<Chat[]>([]);
 
   const [activeChatId, setActiveChatId] =
-    useState(1);
+    useState<number | null>(null);
 
-  const activeChat = chats.find(
-    (chat) => chat.id === activeChatId
-  );
+  const [isThinking, setIsThinking] = useState(false);
 
-  const sendMessage = async (
-    message: string
-  ) => {
+  const activeChat = activeChatId
+    ? chats.find((chat) => chat.id === activeChatId)
+    : undefined;
+
+  const sendMessage = async (message: string) => {
     if (!message.trim()) return;
 
-    // simpan pesan user
+    let chatId = activeChatId;
+
+    if (chatId === null) {
+      chatId = Date.now();
+      const newChat: Chat = { id: chatId, title: message.slice(0, 30) || "New Chat", messages: [] };
+      setChats((prev) => [...prev, newChat]);
+      setActiveChatId(chatId);
+    }
+
     setChats((prevChats) =>
       prevChats.map((chat) => {
-        if (chat.id !== activeChatId)
-          return chat;
-
-        return {
-          ...chat,
-          messages: [
-            ...chat.messages,
-            {
-              sender: "user",
-              text: message,
-            },
-          ],
-        };
+        if (chat.id !== chatId) return chat;
+        return { ...chat, messages: [...chat.messages, { sender: "user" as const, text: message }] };
       })
     );
 
+    setIsThinking(true);
+
     try {
-      const response = await fetch(
-        "/api/chat",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            message,
-          }),
-        }
-      );
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
 
       const data = await response.json();
 
-      // simpan balasan AI
       setChats((prevChats) =>
         prevChats.map((chat) => {
-          if (
-            chat.id !== activeChatId
-          )
-            return chat;
-
-          return {
-            ...chat,
-            messages: [
-              ...chat.messages,
-              {
-                sender: "bot",
-                text:
-                  data.reply ??
-                  "Tidak ada respon.",
-              },
-            ],
-          };
+          if (chat.id !== chatId) return chat;
+          return { ...chat, messages: [...chat.messages, { sender: "bot" as const, text: data.reply ?? "Tidak ada respon." }] };
         })
       );
     } catch (error) {
@@ -114,33 +68,19 @@ export default function Home() {
 
       setChats((prevChats) =>
         prevChats.map((chat) => {
-          if (
-            chat.id !== activeChatId
-          )
-            return chat;
-
-          return {
-            ...chat,
-            messages: [
-              ...chat.messages,
-              {
-                sender: "bot",
-                text:
-                  "Terjadi kesalahan.",
-              },
-            ],
-          };
+          if (chat.id !== chatId) return chat;
+          return { ...chat, messages: [...chat.messages, { sender: "bot" as const, text: "Terjadi kesalahan." }] };
         })
       );
+    } finally {
+      setIsThinking(false);
     }
   };
 
   const handleNewChat = () => {
     const newChat: Chat = {
       id: Date.now(),
-      title: `Chat ${
-        chats.length + 1
-      }`,
+      title: "New Chat",
       messages: [],
     };
 
@@ -152,20 +92,31 @@ export default function Home() {
     setActiveChatId(newChat.id);
   };
 
+  const handleRenameChat = (id: number, newTitle: string) => {
+    setChats((prev) =>
+      prev.map((chat) =>
+        chat.id === id ? { ...chat, title: newTitle } : chat
+      )
+    );
+  };
+
+  const handleDeleteChat = (id: number) => {
+    setChats((prev) => prev.filter((chat) => chat.id !== id));
+    if (activeChatId === id) {
+      setActiveChatId(null);
+    }
+  };
+
   return (
     <main className="flex h-screen overflow-hidden bg-[#F7F8FC]">
       <div className="hidden md:flex">
         <Sidebar
           chats={chats}
-          activeChatId={
-            activeChatId
-          }
-          onSelectChat={
-            setActiveChatId
-          }
-          onNewChat={
-            handleNewChat
-          }
+          activeChatId={activeChatId}
+          onSelectChat={setActiveChatId}
+          onNewChat={handleNewChat}
+          onRenameChat={handleRenameChat}
+          onDeleteChat={handleDeleteChat}
         />
       </div>
 
@@ -175,6 +126,13 @@ export default function Home() {
           []
         }
         onSend={sendMessage}
+        isThinking={isThinking}
+        chats={chats}
+        activeChatId={activeChatId}
+        onSelectChat={setActiveChatId}
+        onNewChat={handleNewChat}
+        onRenameChat={handleRenameChat}
+        onDeleteChat={handleDeleteChat}
       />
     </main>
   );
