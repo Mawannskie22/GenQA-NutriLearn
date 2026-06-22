@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@google/genai": "^2.9.0",
     "@radix-ui/react-avatar": "^1.2.0",
     "@radix-ui/react-scroll-area": "^1.2.12",
     "class-variance-authority": "^0.7.1",

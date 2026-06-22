@@ -49,10 +49,12 @@ export default function Home() {
     setIsThinking(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+      const response = await fetch(`${API_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ question: message }),
       });
 
       const data = await response.json();
@@ -60,7 +62,7 @@ export default function Home() {
       setChats((prevChats) =>
         prevChats.map((chat) => {
           if (chat.id !== chatId) return chat;
-          return { ...chat, messages: [...chat.messages, { sender: "bot" as const, text: data.reply ?? "Tidak ada respon." }] };
+          return { ...chat, messages: [...chat.messages, { sender: "bot" as const, text: data.answer ?? "Tidak ada respon." }] };
         })
       );
     } catch (error) {
