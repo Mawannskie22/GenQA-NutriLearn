@@ -22,7 +22,7 @@ export default function RootLayout({
     <html
       lang="id"
       className={`${carlito.variable} h-full antialiased`}
-      style={{ fontFamily: "var(--font-calibri), 'Calibri', cursive" }}
+
     >
       <body className="min-h-dvh flex flex-col">{children}</body>
     </html>
