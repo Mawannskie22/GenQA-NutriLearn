@@ -1,14 +1,19 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { BarChart3 } from "lucide-react";
 
 interface Props {
   sender: "user" | "bot";
   text: string;
+  question?: string;
+  onEvaluate?: (question: string, answer: string) => void;
 }
 
 export default function ChatBubble({
   sender,
   text,
+  question,
+  onEvaluate,
 }: Props) {
   const isUser = sender === "user";
 
@@ -33,11 +38,23 @@ export default function ChatBubble({
         {isUser ? (
           text
         ) : (
-          <div className="markdown-body">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {text}
-            </ReactMarkdown>
-          </div>
+          <>
+            <div className="markdown-body">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {text}
+              </ReactMarkdown>
+            </div>
+
+            {question && onEvaluate && (
+              <button
+                onClick={() => onEvaluate(question, text)}
+                className="mt-3 flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-600 transition-colors"
+              >
+                <BarChart3 size={14} />
+                Evaluate
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

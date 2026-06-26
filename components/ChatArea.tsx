@@ -20,6 +20,7 @@ interface Props {
   onNewChat: () => void;
   onRenameChat: (id: number, newTitle: string) => void;
   onDeleteChat: (id: number) => void;
+  onEvaluate?: (question: string, answer: string) => void;
 }
 
 export default function ChatArea({
@@ -32,6 +33,7 @@ export default function ChatArea({
   onNewChat,
   onRenameChat,
   onDeleteChat,
+  onEvaluate,
 }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -65,6 +67,7 @@ export default function ChatArea({
           onSend={onSend}
           isThinking={isThinking}
           bottomRef={bottomRef}
+          onEvaluate={onEvaluate}
         />
       ) : (
         <CenteredLayout onSend={onSend} isThinking={isThinking} />
@@ -110,11 +113,13 @@ function ChatLayout({
   onSend,
   isThinking,
   bottomRef,
+  onEvaluate,
 }: {
   messages: Message[];
   onSend: (message: string) => void;
   isThinking: boolean;
   bottomRef: React.RefObject<HTMLDivElement | null>;
+  onEvaluate?: (question: string, answer: string) => void;
 }) {
   return (
     <>
@@ -138,6 +143,8 @@ function ChatLayout({
                 key={`msg-${index}-${message.sender}`}
                 sender={message.sender}
                 text={message.text}
+                question={message.question}
+                onEvaluate={onEvaluate}
               />
             ))}
 
