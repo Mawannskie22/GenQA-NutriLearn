@@ -10,7 +10,8 @@ const carlito = Carlito({
 
 export const metadata: Metadata = {
   title: { default: "NutriAI", template: "%s | NutriAI" },
-  description: "AI Nutrition Assistant — Tanya tentang gizi, BMI, protein, dan pola makan sehat",
+  description:
+    "AI Nutrition Assistant — Tanya tentang gizi, BMI, protein, dan pola makan sehat",
 };
 
 export default function RootLayout({
@@ -19,11 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="id"
-      className={`${carlito.variable} h-full antialiased`}
-
-    >
+    <html lang="id" className={`${carlito.variable} h-full antialiased`}>
       <body className="min-h-dvh flex flex-col">{children}</body>
     </html>
   );
