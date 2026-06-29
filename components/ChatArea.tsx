@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Search, User, Settings } from "lucide-react";
-import { Message, Chat } from "@/app/page";
+import { Message, Chat } from "@/lib/types";
 import ChatBubble from "./ChatBubble";
 import SuggestionChips from "./SuggestionChips";
 import ChatInput from "./ChatInput";

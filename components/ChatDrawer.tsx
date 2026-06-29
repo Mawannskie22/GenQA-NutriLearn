@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { X, Search, Plus, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import { Chat } from "@/app/page";
+import { Chat } from "@/lib/types";
 import ConfirmDialog from "./ConfirmDialog";
 
 interface Props {
@@ -40,28 +40,31 @@ export default function ChatDrawer({
     }
   }, [renamingId]);
 
-  useEffect(() => {
-    if (!open) {
-      setMenuOpenId(null);
-      setRenamingId(null);
-      setSearchQuery("");
-    }
-  }, [open]);
-
   const filteredChats = searchQuery
     ? chats.filter((c) =>
         c.title.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : chats;
 
+  const resetState = () => {
+    setMenuOpenId(null);
+    setRenamingId(null);
+    setSearchQuery("");
+  };
+
+  const handleClose = () => {
+    resetState();
+    onClose();
+  };
+
   const handleSelect = (id: number) => {
     onSelectChat(id);
-    onClose();
+    handleClose();
   };
 
   const handleNewAndClose = () => {
     onNewChat();
-    onClose();
+    handleClose();
   };
 
   return (
@@ -69,7 +72,7 @@ export default function ChatDrawer({
       {open && (
         <div
           className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={onClose}
+          onClick={handleClose}
         />
       )}
 
@@ -82,7 +85,7 @@ export default function ChatDrawer({
           {/* HEADER */}
           <div className="flex items-center justify-between p-4 border-b">
             <h1 className="text-2xl font-bold text-blue-600 text-balance">NutriAI</h1>
-            <button onClick={onClose} aria-label="Close drawer">
+            <button onClick={handleClose} aria-label="Close drawer">
               <X size={22} />
             </button>
           </div>

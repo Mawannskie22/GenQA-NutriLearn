@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import { Chat } from "@/app/page";
+import { Chat } from "@/lib/types";
 import ConfirmDialog from "./ConfirmDialog";
 
 interface Props {
